@@ -20,8 +20,23 @@ bool EventTriggered(double interval)
     return false;
 }
 
+void FullScreen(int Width, int Height){
+    if(!IsWindowFullscreen())
+    {
+        int monitor = GetCurrentMonitor();
+        SetWindowSize(GetMonitorWidth(monitor), GetMonitorHeight(monitor));
+        ToggleFullscreen();
+    }
+    else {
+        ToggleFullscreen();
+        SetWindowSize(Width, Height);
+    }
+}
+
 int main()
 {
+    int a = 860;
+    int b = 1100;
     InitWindow(860, 1100, "Game xếp gạchh");
     SetTargetFPS(60);
     auto startTime = std::chrono::high_resolution_clock::now();
@@ -36,6 +51,9 @@ int main()
     {
         if(IsKeyPressed(KEY_SPACE)){
             Paused = !Paused;
+        }
+        if (IsKeyPressed(KEY_SPACE)){
+            FullScreen(a,b);
         }
 
     if(!Paused){
