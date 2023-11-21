@@ -2,9 +2,11 @@
 #include "game.h"
 #include "colors.h"
 #include <iostream>
+#include<chrono>
 
 bool Paused = false;
-
+bool gameEnded = false;
+double totalRunTime = 0.0;
 double lastUpdateTime = 0;
 
 bool EventTriggered(double interval)
@@ -22,8 +24,11 @@ int main()
 {
     InitWindow(860, 1100, "Game xếp gạchh");
     SetTargetFPS(60);
+    auto startTime = std::chrono::high_resolution_clock::now();
 
     Font font = LoadFontEx("Font/monogram.ttf", 64, 0, 0);
+
+
 
     Game game = Game();
 
@@ -45,10 +50,29 @@ int main()
         ClearBackground(darkBlue);
         DrawTextEx(font, "Score", {(2)*350, 15}, 38, 2, WHITE);
         DrawTextEx(font, "Next", {(2)*350, 175}, 38, 2, WHITE);
-        if (game.gameOver)
+        if (!gameEnded &&game.gameOver)
         {
+            gameEnded = true;
+            auto endTime = std::chrono::high_resolution_clock::now();
+            totalRunTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
+            totalRunTime /= 1000;
+
+            // std::cout << "Total game run time: " << totalRunTime << " milliseconds" << std::endl;
             DrawTextEx(font, "GAME OVER", {(2)*320, 450}, 38, 2, WHITE);
+
         }
+         if (gameEnded) {
+            DrawText(TextFormat("Time: %.2f s", totalRunTime), 620, 580, 38, WHITE);
+            DrawText("Bam Enter de \n   choi lai",624,690,30,WHITE);
+        }
+        if (IsKeyPressed(KEY_ENTER) && gameEnded) {
+            // Reset thời gian
+            totalRunTime = 0.0;
+
+            // Reset trạng thái game và bất kỳ biến khác cần thiết
+            gameEnded = false;
+        }
+
         DrawRectangleRounded({(2)*320, 55, 170, 60}, 0.3, 6, lightBlue);
 
         char scoreText[10];
@@ -60,8 +84,9 @@ int main()
         game.Draw();
 
         if(Paused){
-            DrawText("Paused",200,450,40, WHITE);
+            DrawText("Paused",210,450,40, WHITE);
         }
+
         EndDrawing();
     }
 
