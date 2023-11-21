@@ -33,6 +33,7 @@ void FullScreen(int Width, int Height){
     }
 }
 
+
 int main()
 {
     int a = 860;
@@ -52,9 +53,10 @@ int main()
         if(IsKeyPressed(KEY_SPACE)){
             Paused = !Paused;
         }
-        if (IsKeyPressed(KEY_SPACE)){
+        if (IsKeyPressed(KEY_F)){
             FullScreen(a,b);
         }
+        
 
     if(!Paused){
         UpdateMusicStream(game.music);
@@ -65,7 +67,7 @@ int main()
         }
     }
         BeginDrawing();
-        ClearBackground(darkBlue);
+        ClearBackground(colorr);
         DrawTextEx(font, "Score", {(2)*350, 15}, 38, 2, WHITE);
         DrawTextEx(font, "Next", {(2)*350, 175}, 38, 2, WHITE);
         if (!gameEnded &&game.gameOver)
